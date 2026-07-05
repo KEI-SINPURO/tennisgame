@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>テニスゲーム</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="game-container">
+    <h1>テニスゲーム</h1>
+    <div class="score-board">
+      <div class="score">
+        <span class="label">あなた</span>
+        <span id="playerScore">0</span>
+      </div>
+      <div class="score">
+        <span class="label">CPU</span>
+        <span id="cpuScore">0</span>
+      </div>
+    </div>
+    <canvas id="gameCanvas" width="800" height="500"></canvas>
+    <p class="instructions">マウスまたは ↑ / ↓ キーでラケットを動かします。5点先取で勝利です。</p>
+    <div class="controls">
+      <button id="startBtn">ゲーム開始</button>
+      <button id="restartBtn">リスタート</button>
+    </div>
+    <div id="message" class="message"></div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
