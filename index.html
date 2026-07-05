@@ -2,28 +2,51 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>テニスゲーム</title>
+<title>本格テニスゲーム</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="game-container">
-    <h1>テニスゲーム</h1>
-    <div class="score-board">
-      <div class="score">
-        <span class="label">あなた</span>
-        <span id="playerScore">0</span>
+    <h1>🎾 本格テニスゲーム</h1>
+
+    <div class="scoreboard">
+      <div class="score-row header">
+        <span class="name-col"></span>
+        <span class="pt-col">ポイント</span>
+        <span class="gm-col">ゲーム</span>
       </div>
-      <div class="score">
-        <span class="label">CPU</span>
-        <span id="cpuScore">0</span>
+      <div class="score-row">
+        <span class="name-col">あなた</span>
+        <span class="pt-col" id="playerPoint">0</span>
+        <span class="gm-col" id="playerGames">0</span>
+      </div>
+      <div class="score-row">
+        <span class="name-col">CPU</span>
+        <span class="pt-col" id="cpuPoint">0</span>
+        <span class="gm-col" id="cpuGames">0</span>
       </div>
     </div>
-    <canvas id="gameCanvas" width="800" height="500"></canvas>
-    <p class="instructions">マウスまたは ↑ / ↓ キーでラケットを動かします。5点先取で勝利です。</p>
+
+    <div class="status-bar">
+      <span id="serverInfo">サーブ: あなた</span>
+      <span id="rallyInfo">ラリー: 0</span>
+    </div>
+
+    <div class="canvas-wrap">
+      <canvas id="gameCanvas" width="640" height="860"></canvas>
+      <div id="popupLayer"></div>
+    </div>
+
+    <p class="instructions">
+      マウスでラケットを動かして打球！ <b>スペースキー</b>を押しながら打つと強力な<b>スマッシュ</b>になります。<br>
+      サーブの時は画面クリックか、スペースキーでサーブしましょう。ワンバウンドで打ち返そう！
+    </p>
+
     <div class="controls">
-      <button id="startBtn">ゲーム開始</button>
+      <button id="startBtn">試合開始</button>
       <button id="restartBtn">リスタート</button>
     </div>
+
     <div id="message" class="message"></div>
   </div>
   <script src="script.js"></script>
