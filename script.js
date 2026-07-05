@@ -234,7 +234,7 @@ function playerServe() {
   ensureAudio();
   const targetX = COURT_LEFT + 40 + Math.random() * (COURT_RIGHT - COURT_LEFT - 80);
   const targetY = COURT_TOP + 60 + Math.random() * 100;
-  launchBall(ball.x, ball.y, targetX, targetY, 15, 'player');
+  launchBall(ball.x, ball.y, targetX, targetY, 46, 'player');
   sfxHit(0.6);
   messageEl.textContent = '';
   state = 'rally';
@@ -243,21 +243,25 @@ function playerServe() {
 function cpuServe() {
   const targetX = COURT_LEFT + 40 + Math.random() * (COURT_RIGHT - COURT_LEFT - 80);
   const targetY = COURT_BOTTOM - 160 + Math.random() * 100;
-  launchBall(ball.x, ball.y, targetX, targetY, 14, 'cpu');
+  launchBall(ball.x, ball.y, targetX, targetY, 44, 'cpu');
   sfxHit(0.5);
   messageEl.textContent = '';
   state = 'rally';
 }
 
-/* 弾道計算: (fromX,fromY) から (toX,toY) へ、frames フレームで届く放物線 */
+/* 弾道計算: (fromX,fromY) から (toX,toY) へ、frames フレーム後にちょうど着地する放物線
+   ポイント: 横移動が目標地点に到達するタイミングと、ボールの高さが0になる
+   タイミングを完全に同期させる。これにより「狙った場所に必ず落ちる」ようになる。 */
 function launchBall(fromX, fromY, toX, toY, frames, hitter) {
+  frames = Math.max(12, frames);
   ball.x = fromX; ball.y = fromY;
   ball.vx = (toX - fromX) / frames;
   ball.vy = (toY - fromY) / frames;
-  // 山なりの軌道になるよう初速を計算(重力から頂点の高さを逆算)
-  const peakHeight = 90 + Math.random() * 40;
-  ball.vh = Math.sqrt(2 * GRAVITY * peakHeight);
-  ball.h = Math.max(ball.h, 0);
+
+  // h(t) = h0 + vh*t - 0.5*GRAVITY*t^2 が t=frames で 0 になるように vh を逆算
+  const h0 = ball.h;
+  ball.vh = (0.5 * GRAVITY * frames * frames - h0) / frames;
+
   ball.bounces = 0;
   lastHitter = hitter;
 }
@@ -305,7 +309,7 @@ function updatePlayerPosition() {
 function updateCpuPosition() {
   const targetX = ball.y < NET_Y ? ball.x : cpu.x; // ボールが自陣にある時だけ追う
   const minX = COURT_LEFT - 20, maxX = COURT_RIGHT + 20;
-  const speed = cpu.speed + difficulty * 0.35;
+  const speed = cpu.speed + difficulty * 0.25;
   if (cpu.x < targetX - 4) cpu.x += Math.min(speed, targetX - cpu.x);
   else if (cpu.x > targetX + 4) cpu.x -= Math.min(speed, cpu.x - targetX);
   cpu.x = Math.max(minX, Math.min(maxX, cpu.x));
@@ -319,7 +323,7 @@ function updateCpuPosition() {
 function performHit(entity) {
   const isPlayer = entity.side === 'player';
   rally++;
-  difficulty = Math.min(6, rally * 0.12);
+  difficulty = Math.min(4, rally * 0.08);
 
   let power = 1;
   let smash = false;
@@ -346,12 +350,10 @@ function performHit(entity) {
     ? COURT_TOP + 50 + Math.random() * 120
     : COURT_BOTTOM - 170 + Math.random() * 120;
 
-  const baseFrames = Math.max(26, 44 - rally * 1.1 - difficulty * 2);
-  const frames = smash ? baseFrames * 0.72 : baseFrames;
+  const baseFrames = Math.max(32, 52 - rally * 1.0 - difficulty * 2);
+  const frames = smash ? baseFrames * 0.75 : baseFrames;
 
   launchBall(entity.x, entity.y, targetX, targetY, frames, entity.side);
-  // スマッシュは弾道を低めに(頂点を下げる)
-  if (smash) ball.vh *= 0.7;
 
   sfxHit(power);
   spawnParticles(entity.x, entity.y, entity.color, smash ? 26 : 14);
