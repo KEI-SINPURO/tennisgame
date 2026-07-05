@@ -1,0 +1,97 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1e3c72, #2a5298);
+  font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+  color: #fff;
+}
+
+.game-container {
+  text-align: center;
+  padding: 20px;
+}
+
+h1 {
+  margin-bottom: 15px;
+  font-size: 2em;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+}
+
+.score-board {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  margin-bottom: 15px;
+}
+
+.score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.score .label {
+  font-size: 0.9em;
+  opacity: 0.8;
+}
+
+.score span#playerScore,
+.score span#cpuScore {
+  font-size: 2.5em;
+  font-weight: bold;
+}
+
+canvas {
+  background: #0a3d0a;
+  border: 4px solid #fff;
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+  max-width: 100%;
+  cursor: none;
+}
+
+.instructions {
+  margin-top: 12px;
+  font-size: 0.9em;
+  opacity: 0.85;
+}
+
+.controls {
+  margin-top: 15px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+button {
+  padding: 10px 24px;
+  font-size: 1em;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #ffcc00;
+  color: #1e3c72;
+  font-weight: bold;
+  transition: transform 0.15s, background 0.15s;
+}
+
+button:hover {
+  background: #ffd633;
+  transform: translateY(-2px);
+}
+
+.message {
+  margin-top: 15px;
+  font-size: 1.3em;
+  font-weight: bold;
+  min-height: 1.5em;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+}
